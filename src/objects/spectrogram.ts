@@ -24,7 +24,7 @@ export default class Spectrogram extends BaseAnalyserObject<{}, {}, [Bang], [], 
     static props: IPropsMeta<P> = {
         windowSize: {
             type: "number",
-            default: 1024,
+            default: 65536,
             description: "Signal window size"
         },
         fftSize: {
