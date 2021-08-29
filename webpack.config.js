@@ -1,6 +1,4 @@
 const path = require('path');
-const { DefinePlugin } = require('webpack');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 /** @type {import('webpack').Configuration} */
@@ -10,9 +8,6 @@ const config = {
     "index.jspatpkg": './src/index.jspatpkg.ts'
   },
   resolve: {
-    fallback: {
-      "util": require.resolve("util")
-    },
     extensions: ['.tsx', '.ts', '.js']
   },
   node: {
@@ -25,19 +20,18 @@ const config = {
   },
   module: {
     rules: [{
-        test: /\.(ts|js)x?$/,
-        use: 'babel-loader',
-        exclude: /node_modules/,
+      test: /\.(ts|js)x?$/,
+      use: {
+        loader: 'esbuild-loader',
+        options: {
+          loader: 'tsx',
+          target: 'es2017'
+        }
       },
-    ]
+      exclude: /node_modules/
+    }]
   },
   plugins: [
-    new DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
-      },
-      'process.platform': {}
-    }),
     new CleanWebpackPlugin()
   ],
   // watch: true,
