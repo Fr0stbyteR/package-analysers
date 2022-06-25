@@ -23,12 +23,10 @@
     "@types/react": "^17.0.19",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "color-js": "^1.0.5",
-    "copy-webpack-plugin": "^9.0.1",
     "esbuild-loader": "^2.15.1",
     "react": "^17.0.2",
     "typescript": "^4.4.2",
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0"
-  },
-  "dependencies": {}
+  }
 }
