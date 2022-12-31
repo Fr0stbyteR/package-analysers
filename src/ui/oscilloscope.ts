@@ -86,7 +86,7 @@ export default class OscilloscopeUI extends CanvasUI<Oscilloscope, {}, Oscillosc
         if (autoRange) {
             // Fastest way to get min and max to have: 1. max abs value for y scaling, 2. mean value for zero-crossing
             let i = channels;
-            let s = 0;
+            let s: number;
             while (i--) {
                 let j = l;
                 while (j--) {
@@ -170,25 +170,27 @@ export default class OscilloscopeUI extends CanvasUI<Oscilloscope, {}, Oscillosc
             ctx.beginPath();
             channelColor[i] = Color(phosphorColor).shiftHue(i * hueOffset).toHSL();
             ctx.strokeStyle = channelColor[i];
-            let maxInStep;
-            let minInStep;
+            let maxInStep: number;
+            let minInStep: number;
+            let $j: number;
+            let samp: number;
+            let $step: number;
+            let x: number;
+            let y: number;
             for (let j = $0; j < $1; j++) {
-                const $j = (j + $) % dl;
-                const samp = t[i][$j];
-                const $step = (j - $0) % sampsPerPixel;
+                $j = (j + $) % dl;
+                samp = t[i][$j];
+                $step = (j - $0) % sampsPerPixel;
                 if ($step === 0) {
                     maxInStep = samp;
                     minInStep = samp;
+                } else {
+                    if (samp > maxInStep) maxInStep = samp;
+                    if (samp < minInStep) minInStep = samp;
                 }
-                if ($step !== sampsPerPixel - 1) {
-                    if ($step !== 0) {
-                        if (samp > maxInStep) maxInStep = samp;
-                        if (samp < minInStep) minInStep = samp;
-                    }
-                    continue;
-                }
-                const x = (j - $step - $0) * pixelsPerSamp;
-                let y = calcY(maxInStep, i);
+                if ($step !== sampsPerPixel - 1) continue;
+                x = (j - $step - $0) * pixelsPerSamp;
+                y = calcY(maxInStep, i);
                 if (j === $0) ctx.moveTo(x, y);
                 else ctx.lineTo(x, y);
                 if (minInStep !== maxInStep) {
